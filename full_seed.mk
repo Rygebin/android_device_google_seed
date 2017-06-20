@@ -24,6 +24,6 @@ $(call inherit-product, device/google/seed/device.mk)
 PRODUCT_DEVICE := seed
 PRODUCT_NAME := full_seed
 PRODUCT_BRAND := google
-PRODUCT_MODEL := SEED
+PRODUCT_MODEL := General Mobile 4G
 PRODUCT_MANUFACTURER := google
 

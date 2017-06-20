@@ -1,5 +1,4 @@
 # Copyright (C) 2015 The CyanogenMod Project
-# Copyright (C) 2017 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,14 +14,8 @@
 
 $(call inherit-product, device/google/seed/full_seed.mk)
 
-# Inherit some common LineageOS stuff.
+# Inherit some common CM stuff.
 $(call inherit-product, vendor/cm/config/common_full_phone.mk)
-
-#Assert
-TARGET_OTA_ASSERT_DEVICE := seed,Seed,h220,H220,g1,G1,IQ_II,crackling
-
-# Must define platform variant before including any common things
-TARGET_BOARD_PLATFORM_VARIANT := msm8916
 
 PRODUCT_NAME := lineage_seed
 BOARD_VENDOR := google
@@ -31,9 +24,15 @@ PRODUCT_DEVICE := seed
 PRODUCT_GMS_CLIENTID_BASE := android-google
 
 PRODUCT_MANUFACTURER := Google
-PRODUCT_MODEL := Google Seed
+PRODUCT_MODEL := General Mobile 4G
 
 PRODUCT_BRAND := Google
 TARGET_VENDOR := Google
 TARGET_VENDOR_PRODUCT_NAME := Seed
 TARGET_VENDOR_DEVICE_NAME := seed
+
+# Fingerprint
+PRODUCT_BUILD_PROP_OVERRIDES += \
+    PRODUCT_NAME=seed \
+    BUILD_FINGERPRINT=google/seed_l8150/seed:6.0.1/MOB30Z/3084227:user/release-keys \
+    PRIVATE_BUILD_DESC="seed_l8150-user 6.0.1 MOB30Z 3084227 release-keys"

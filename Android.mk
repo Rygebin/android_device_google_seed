@@ -1,6 +1,5 @@
 #
-# Copyright (C) 2015 The CyanogenMod Project
-# Copyright (C) 2017 The LineageOs Project
+# Copyright (C) 2014 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -115,5 +114,12 @@ ALL_DEFAULT_INSTALLED_MODULES += $(WV_SYMLINKS)
 $(shell mkdir -p $(TARGET_OUT)/etc/firmware/wlan/prima; \
     ln -sf /data/misc/wifi/WCNSS_qcom_cfg.ini \
 	    $(TARGET_OUT)/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini)
+
+# Create links for audcal data files
+$(shell mkdir -p $(TARGET_OUT_ETC)/firmware/wcd9306; \
+    ln -sf /data/misc/audio/wcd9320_anc.bin \
+    $(TARGET_OUT_ETC)/firmware/wcd9306/wcd9306_anc.bin; \
+    ln -sf /data/misc/audio/mbhc.bin \
+    $(TARGET_OUT_ETC)/firmware/wcd9306/wcd9306_mbhc.bin)
 
 endif

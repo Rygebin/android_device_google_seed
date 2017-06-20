@@ -1,6 +1,5 @@
 #
-# Copyright (C) 2016 The CyanogenMod Project
-# Copyright (c) 2017 The LineageOS Project
+# Copyright (C) 2017 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +15,7 @@
 
 LOCAL_PATH := device/google/seed
 
-# Architecture
+# Platform
 TARGET_BOARD_PLATFORM := msm8916
 TARGET_BOOTLOADER_BOARD_NAME := MSM8916
 TARGET_NO_BOOTLOADER := true
@@ -28,7 +27,11 @@ TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_CPU_VARIANT := cortex-a53
 
+# ANT+
 BOARD_ANT_WIRELESS_DEVICE := "vfs-prerelease"
+
+# Assert
+TARGET_OTA_ASSERT_DEVICE := seed,Seed,h220,H220,g1,G1,IQ_II,crackling
 
 # Audio
 AUDIO_FEATURE_ENABLED_KPI_OPTIMIZE := true
@@ -37,7 +40,7 @@ BOARD_USES_ALSA_AUDIO := true
 USE_CUSTOM_AUDIO_POLICY := 1
 
 # Bluetooth
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/google/seed/bluetooth
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_QCOM := true
 BLUETOOTH_HCI_USE_MCT := true
@@ -51,6 +54,12 @@ USE_DEVICE_SPECIFIC_CAMERA := true
 BOARD_HARDWARE_CLASS += hardware/cyanogen/cmhw
 BOARD_USES_CYANOGEN_HARDWARE := true
 
+# CNE
+BOARD_USES_QCNE := true
+TARGET_LDPRELOAD := libNimsWrap.so
+
+# Dexpreopt
+WITH_DEXPREOPT := true
 
 # Display
 MAX_EGL_CACHE_KEY_SIZE := 12*1024
@@ -63,28 +72,26 @@ TARGET_USES_C2D_COMPOSITION := true
 TARGET_USES_ION := true
 USE_OPENGL_RENDERER := true
 
-# Dexpreopt
-WITH_DEXPREOPT := true
-
 # Encryption
 TARGET_HW_DISK_ENCRYPTION := true
 TARGET_KEYMASTER_WAIT_FOR_QSEE := true
 
 # FM
-AUDIO_FEATURE_ENABLED_FM_POWER_OPT := true
 TARGET_QCOM_NO_FM_FIRMWARE := true
+AUDIO_FEATURE_ENABLED_FM_POWER_OPT := true
 
 # Filesystem
-BOARD_FLASH_BLOCK_SIZE := 131072
-BOARD_BOOTIMAGE_PARTITION_SIZE := 33553920
 BOARD_CACHEIMAGE_PARTITION_SIZE := 157285888
 BOARD_PERSISTIMAGE_PARTITION_SIZE := 33553920
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 33553920
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 1610612224
+BOARD_BOOTIMAGE_PARTITION_SIZE := 33553920
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 13295385600
+BOARD_FLASH_BLOCK_SIZE := 131072
 
-BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USERIMAGES_USE_F2FS := true
+BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 
 # GPS
 TARGET_NO_RPC := true
@@ -98,17 +105,15 @@ TARGET_RECOVERY_DEVICE_MODULES := libinit_msm8916
 # Kernel
 BOARD_DTBTOOL_ARGS := -2
 BOARD_KERNEL_BASE := 0x80000000
-BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 
+BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_SEPARATED_DT := true
-ENABLE_CPUSETS := true
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_RAMDISK_OFFSET     := 0x01000000
+ENABLE_CPUSETS := true
 TARGET_KERNEL_SOURCE := kernel/google/seed
 TARGET_KERNEL_CONFIG := lineageos_seed_defconfig
-KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_OS)-x86/arm/arm-eabi-4.8/bin
-TARGET_KERNEL_CROSS_COMPILE_PREFIX := arm-eabi-
 
 # Lights
 TARGET_PROVIDES_LIBLIGHT := true
@@ -123,14 +128,19 @@ TARGET_POWERHAL_VARIANT := qcom
 TARGET_RIL_VARIANT := caf
 
 # Recovery
-TARGET_RECOVERY_FSTAB := device/google/seed/rootdir/etc/fstab.qcom
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.qcom
 
-# Wifi
+# Sepolicy
+include device/qcom/sepolicy/sepolicy.mk
+BOARD_SEPOLICY_DIRS += \
+    $(LOCAL_PATH)/sepolicy
+
+# Wlan
 BOARD_HAS_QCOM_WLAN := true
 BOARD_HAS_QCOM_WLAN_SDK := true
 BOARD_HOSTAPD_DRIVER := NL80211
-BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_qcwcn
 BOARD_WLAN_DEVICE := qcwcn
+BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_qcwcn
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_qcwcn
 TARGET_USES_QCOM_WCNSS_QMI := true
